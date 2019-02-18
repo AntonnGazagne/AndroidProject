@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "766201985457",
+    "firebase_url": "https://twibook-f0e01.firebaseio.com",
+    "project_id": "twibook-f0e01",
+    "storage_bucket": "twibook-f0e01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766201985457:android:07c0605570341bf6",
+        "android_client_info": {
+          "package_name": "fr.isen.twibook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766201985457-u2asvpddmhcdjq2sffrjok3vanjrcudg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.isen.twibook",
+            "certificate_hash": "507b1d64981c93d971d0d61c728a8cee1557fb5a"
+          }
+        },
+        {
+          "client_id": "766201985457-ngk7ia4m4rrf4h056ou6an424u77pvl1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVM6PmjEme8O9kUskT93VyOAEzfn8p6nU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766201985457-ngk7ia4m4rrf4h056ou6an424u77pvl1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
