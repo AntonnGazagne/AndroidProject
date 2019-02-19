@@ -3,25 +3,16 @@ package fr.isen.twibook
 import android.app.ProgressDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.content.Intent
 import android.support.annotation.VisibleForTesting
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_signup.*
+import com.google.firebase.auth.FirebaseAuth
 
 
 class SignupActivity : AppCompatActivity() {
-
-    var _nameText: EditText? = null
-    var _firstnameText: EditText? = null
-    var _emailText: EditText? = null
-    var _passwordText: EditText? = null
-    var _validpasswordText: EditText? = null
-    var _registerButton: Button? = null
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,45 +20,20 @@ class SignupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         auth = FirebaseAuth.getInstance()
-
-        _nameText = findViewById(R.id.signup_activity_nom_edittxt)
-        _firstnameText = findViewById(R.id.signup_activity_prenom_edittxt)
-        _emailText = findViewById(R.id.signup_activity_email_edittxt)
-        _passwordText = findViewById(R.id.signup_activity_mdp_edittxt)
-        _validpasswordText = findViewById(R.id.signup_activity_validmdp_edittxt)
-        _registerButton = findViewById(R.id.signup_activity_register_btn)
-
         signup_activity_register_btn.setOnClickListener { register() }
 
     }
 
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI()
-    }
-
     fun register() {
-
         if (validateForm()) {
-            createAccount(_emailText!!.text.toString(), _validpasswordText!!.text.toString())
+            createAccount(signup_activity_email_edittxt.text.toString(), signup_activity_validmdp_edittxt.text.toString())
         }
-
-
-
     }
 
     fun validateForm(): Boolean {
-        val name = _nameText!!.text.toString()
-        val firstname = _firstnameText!!.text.toString()
-        val email = _emailText!!.text.toString()
-        val password = _passwordText!!.text.toString()
-        val validpassword = _validpasswordText!!.text.toString()
-
         var valid = true
 
-        if (name.isEmpty()) {
+        if (signup_activity_nom_edittxt.text.toString().isEmpty()) {
             valid = false
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
@@ -78,7 +44,7 @@ class SignupActivity : AppCompatActivity() {
             val dialog: AlertDialog = alertDialog.create()
             dialog.show()
 
-        } else if (firstname.isEmpty()) {
+        } else if (signup_activity_prenom_edittxt.text.toString().isEmpty()) {
             valid = false
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
@@ -89,7 +55,7 @@ class SignupActivity : AppCompatActivity() {
             val dialog: AlertDialog = alertDialog.create()
             dialog.show()
 
-        } else if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        } else if (signup_activity_email_edittxt.text.toString().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(signup_activity_email_edittxt.text.toString()).matches()) {
             valid = false
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
@@ -100,7 +66,7 @@ class SignupActivity : AppCompatActivity() {
             val dialog: AlertDialog = alertDialog.create()
             dialog.show()
 
-        } else if (password.isEmpty() || password.length < 4 || password.length > 12) {
+        } else if (signup_activity_mdp_edittxt.text.toString().isEmpty() || signup_activity_mdp_edittxt.text.toString().length < 4 || signup_activity_mdp_edittxt.text.toString().length > 12) {
             valid = false
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
@@ -111,7 +77,7 @@ class SignupActivity : AppCompatActivity() {
             val dialog: AlertDialog = alertDialog.create()
             dialog.show()
 
-        } else if (!(validpassword.equals(_passwordText!!.text.toString(),true))) {
+        } else if (!(signup_activity_validmdp_edittxt.text.toString().equals(signup_activity_mdp_edittxt.text.toString(),true))) {
             valid = false
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
