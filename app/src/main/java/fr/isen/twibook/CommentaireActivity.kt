@@ -1,6 +1,7 @@
 package fr.isen.twibook
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -19,6 +20,8 @@ class CommentaireActivity : AppCompatActivity() {
         valideCommentaire.setOnClickListener{
 
             publication(commentaireText.text.toString())
+            //val intent = Intent( this, Activity::class.java)
+            //startActivity(intent)
         }
     }
 
