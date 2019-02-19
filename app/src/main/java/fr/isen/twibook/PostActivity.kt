@@ -2,13 +2,12 @@ package fr.isen.twibook
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import android.R.attr.key
 import android.content.Intent
+import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_post.*
 
 
@@ -32,7 +31,15 @@ class PostActivity : AppCompatActivity() {
 
         article.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.getValue(String::class.java)
+
+                val value = dataSnapshot.getValue(Array<Commentaires>::class.java)
+                    val manager = LinearLayoutManager(this@PostActivity)
+                val Adapter = CommentairesAdapter(value!!)
+
+                CommentsRecycleView.apply{
+                    layoutManager = manager
+                    adapter = Adapter
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -49,7 +56,11 @@ class PostActivity : AppCompatActivity() {
 
         }
 
+
+
     }
+
+
 
     private fun goComment(){
         val intent = Intent(this@PostActivity, CommentaireActivity::class.java )
