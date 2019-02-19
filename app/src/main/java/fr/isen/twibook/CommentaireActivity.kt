@@ -1,11 +1,13 @@
 package fr.isen.twibook
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_commentaire.*
+import org.json.JSONObject
 import java.io.FileOutputStream
 import java.io.IOException
 
@@ -20,6 +22,7 @@ class CommentaireActivity : AppCompatActivity() {
         valideCommentaire.setOnClickListener{
 
             publication(commentaireText.text.toString())
+            testPublication()
             //val intent = Intent( this, Activity::class.java)
             //startActivity(intent)
         }
@@ -43,5 +46,20 @@ class CommentaireActivity : AppCompatActivity() {
             Toast.makeText( this, "Vous devez rentrer un commentaire", Toast.LENGTH_LONG).show()
         }
 
+    }
+
+    private fun testPublication() {
+        val fis = openFileInput(JSON_FILE)
+        val result = fis.bufferedReader().use { it.readText()}
+        fis.close()
+        //Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+
+        val jsonData = JSONObject(result)
+        val comment = jsonData.optString("commentaire")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("commentaire enregistré")
+        builder.setMessage("VOTRE COMMENTAIRE : $comment")
+        builder.create().show()
     }
 }
