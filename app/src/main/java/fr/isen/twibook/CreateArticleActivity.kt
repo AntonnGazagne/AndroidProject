@@ -1,29 +1,31 @@
 package fr.isen.twibook
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.FirebaseApp
-import org.json.JSONObject
+import com.google.firebase.database.*
 import java.text.SimpleDateFormat
 import java.util.*
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_create_article.*
-import java.lang.Exception
+import kotlin.collections.ArrayList
 
 
 class CreateArticleActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
+    private lateinit var database : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_article)
 
         FirebaseApp.initializeApp(this)
+        database = FirebaseDatabase.getInstance().reference
 
         sharedPreferences = getSharedPreferences("Twibook", Context.MODE_PRIVATE)
         val pseudo = sharedPreferences.getString("pseudo","") ?: ""
@@ -41,27 +43,18 @@ class CreateArticleActivity : AppCompatActivity() {
             val formater = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
             val date = formater.format(cal.time)
 
-            val json = getJsonData(titre, pseudo, description, date)
+            val article = Article(date,pseudo, titre,description, ArrayList(), ArrayList() )
+            val child = database.child("Articles").child(database.push().key.toString())
+            child.setValue(article)
 
-            try{
-                val database = FirebaseDatabase.getInstance()
-                val myRef = database.getReference("/Articles/Test1")
-                myRef.setValue(json)
-            }catch (e: Exception){
-                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
-            }
+            gohHome()
         } else {
             Toast.makeText(this, "Un des champs n'est pas rempli", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun getJsonData(titre: String, auteur: String, description : String, date: String) : String{
-        val jsonObject = JSONObject()
-        jsonObject.put("Titre", titre)
-        jsonObject.put("Auteur", auteur)
-        jsonObject.put("Description", description)
-        jsonObject.put("date", date)
-
-        return jsonObject.toString()
+    private fun gohHome(){
+        val intent = Intent(this@CreateArticleActivity, HomeActivity::class.java )
+        startActivity(intent)
     }
 }

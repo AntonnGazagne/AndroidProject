@@ -2,6 +2,15 @@
     <string name="app_name">Twibook</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_create_article">CreateArticleActivity</string>
+    <string name="Twibook">Twibook</string>
+
+
     <string name="zoneCommentaire">Tapez votre commentaire</string>
     <string name="boutonComentaire">Commenter</string>
+
+
+    <string name="TitreArticle">Création d\'articles</string>
+    <string name="Titre">Titre</string>
+    <string name="Description">Description</string>
+    <string name="Post">Post</string>
 </resources>
