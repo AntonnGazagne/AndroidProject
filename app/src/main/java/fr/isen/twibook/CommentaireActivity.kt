@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_commentaire.*
 import java.io.FileOutputStream
 import java.io.IOException
 
-class CommentaryActivity : AppCompatActivity() {
+class CommentaireActivity : AppCompatActivity() {
 
     private val JSON_FILE = "json_file"
 
