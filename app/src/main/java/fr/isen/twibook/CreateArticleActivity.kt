@@ -5,11 +5,13 @@ import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.google.firebase.FirebaseApp
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_create_article.*
+import java.lang.Exception
 
 
 class CreateArticleActivity : AppCompatActivity() {
@@ -20,6 +22,8 @@ class CreateArticleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_article)
+
+        FirebaseApp.initializeApp(this)
 
         sharedPreferences = getSharedPreferences("Twibook", Context.MODE_PRIVATE)
         val pseudo = sharedPreferences.getString("pseudo","") ?: ""
@@ -39,9 +43,13 @@ class CreateArticleActivity : AppCompatActivity() {
 
             val json = getJsonData(titre, pseudo, description, date)
 
-            val database = FirebaseDatabase.getInstance()
-            val myRef = database.getReference("Articles")
-            //myRef.setValue(json)
+            try{
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference("/Articles/Test1")
+                myRef.setValue(json)
+            }catch (e: Exception){
+                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+            }
         } else {
             Toast.makeText(this, "Un des champs n'est pas rempli", Toast.LENGTH_LONG).show()
         }
