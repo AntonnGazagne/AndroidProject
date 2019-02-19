@@ -7,7 +7,8 @@ data class  Article(
     var titre: String? = "",
     var description: String? = "",
     var commentaires: ArrayList<Commentaires>? = ArrayList(),
-    var liker: ArrayList<Auteur>? = ArrayList()
+    var liker: ArrayList<Auteur>? = ArrayList(),
+    var id: String? = ""
 )
 
 data class Commentaires(

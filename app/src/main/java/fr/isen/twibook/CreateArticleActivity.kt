@@ -45,8 +45,9 @@ class CreateArticleActivity : AppCompatActivity() {
             val formater = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
             val date = formater.format(cal.time)
 
-            val article = Article(date,pseudo,photo, titre,description, ArrayList(), ArrayList() )
-            val child = database.child("Articles").child(database.push().key.toString())
+            val key = database.push().key.toString();
+            val article = Article(date,pseudo,photo, titre,description, ArrayList(), ArrayList(),key)
+            val child = database.child("Articles").child(key)
             child.setValue(article)
 
             gohHome()

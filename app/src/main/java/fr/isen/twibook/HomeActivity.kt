@@ -2,8 +2,10 @@ package fr.isen.twibook
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
@@ -33,6 +35,10 @@ class HomeActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         database = FirebaseDatabase.getInstance().reference
 
+
+        Wall.setOnClickListener{
+            goPost()
+        }
         database.child("Articles").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 articles = ArrayList<Article>()
@@ -42,7 +48,8 @@ class HomeActivity : AppCompatActivity() {
                     val description = messageSnapshot.child("description").value as String?
                     val date = messageSnapshot.child("date").value as String?
                     val titre = messageSnapshot.child("titre").value as String?
-                    val article = Article(date,auteur,photo,titre,description)
+                    val id = messageSnapshot.child("id").value as String?
+                    val article = Article(date,auteur,photo,titre,description,null,null,id)
                     articles.add(article)
                 }
                 val viewManager = LinearLayoutManager(this@HomeActivity)
@@ -51,9 +58,8 @@ class HomeActivity : AppCompatActivity() {
                 Wall.apply {
                     layoutManager = viewManager
                     adapter = viewAdapter
-                }
 
-                //Toast.makeText(this@HomeActivity, "Valeur:"+td.toString(), Toast.LENGTH_LONG).show()
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -61,6 +67,13 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
+    }
+    private fun goPost() {
+            val intent = Intent(this@HomeActivity, PostActivity::class.java)
+            val b = Bundle()
+            b.putString("extraArticleKey", "-LZ4HSrGfp8xuh43PhOC") //Your id
+            intent.putExtras(b) //Put your id to your next Intent
+            startActivity(intent)
     }
 
     private fun goCreateArticle(){
