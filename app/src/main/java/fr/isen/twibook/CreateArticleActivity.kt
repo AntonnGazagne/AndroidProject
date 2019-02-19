@@ -30,12 +30,14 @@ class CreateArticleActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("Twibook", Context.MODE_PRIVATE)
         val pseudo = sharedPreferences.getString("pseudo","") ?: ""
 
+        val photo = sharedPreferences.getString("photo","") ?: ""
+
         Post.setOnClickListener{
-            onPost(pseudo)
+            onPost(pseudo, photo)
         }
     }
 
-    private fun onPost(pseudo : String) {
+    private fun onPost(pseudo : String, photo:String) {
         if (descriptionArticle.text.isNotEmpty() && titreArticle.text.isNotEmpty()) {
             val titre = titreArticle.text.toString()
             val description = descriptionArticle.text.toString()
@@ -43,7 +45,7 @@ class CreateArticleActivity : AppCompatActivity() {
             val formater = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
             val date = formater.format(cal.time)
 
-            val article = Article(date,pseudo, titre,description, ArrayList(), ArrayList() )
+            val article = Article(date,pseudo,photo, titre,description, ArrayList(), ArrayList() )
             val child = database.child("Articles").child(database.push().key.toString())
             child.setValue(article)
 
