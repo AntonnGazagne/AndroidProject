@@ -4,10 +4,12 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.annotation.VisibleForTesting
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
@@ -15,6 +17,7 @@ class LoginActivity : AppCompatActivity() {
     var _passwordText: EditText? = null
     var _loginButton: Button? = null
     var _signupLink: Button? = null
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,44 +28,12 @@ class LoginActivity : AppCompatActivity() {
         _passwordText = findViewById(R.id.login_activity_password_edittxt)
         _emailText = findViewById(R.id.login_activity_email_edittxt)
 
-        _loginButton!!.setOnClickListener { login() }
+        _loginButton!!.setOnClickListener { login(_emailText!!.text.toString(), _passwordText!!.text.toString()) }
 
         _signupLink!!.setOnClickListener {
             val intent = Intent(this@LoginActivity, SignupActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    fun login() {
-        Log.d(TAG, "Login")
-
-        if (!validate()) {
-            onLoginFailed()
-            return
-        }
-
-        _loginButton!!.isEnabled = false
-
-        val progressDialog = ProgressDialog(
-            this@LoginActivity,
-            fr.isen.twibook.R.style.AppTheme_AppBarOverlay
-        )
-        progressDialog.isIndeterminate = true
-        progressDialog.setMessage("Login...")
-        progressDialog.show()
-
-        val email = _emailText!!.text.toString()
-        val password = _passwordText!!.text.toString()
-
-
-        android.os.Handler().postDelayed(
-            {
-                // On complete call either onLoginSuccess or onLoginFailed
-                onLoginSuccess()
-                // onLoginFailed();
-                progressDialog.dismiss()
-            }, 3000
-        )
     }
 
 
@@ -88,14 +59,14 @@ class LoginActivity : AppCompatActivity() {
         val password = _passwordText!!.text.toString()
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText!!.error = "enter a valid email address"
+            _emailText!!.error = "entrez une addresse mail valide"
             valid = false
         } else {
             _emailText!!.error = null
         }
 
-        if (password.isEmpty() || password.length < 4 || password.length > 10) {
-            _passwordText!!.error = "between 4 and 10 alphanumeric characters"
+        if (password.isEmpty() || password.length < 4 || password.length > 12) {
+            _passwordText!!.error = "entre 4 et 12 caracteres alphanumeriques"
             valid = false
         } else {
             _passwordText!!.error = null
@@ -104,9 +75,59 @@ class LoginActivity : AppCompatActivity() {
         return valid
     }
 
+    private fun login(email: String, password: String) {
+        Log.d(TAG, "signIn:$email")
+        if (!validate()) {
+            return
+        }
+
+        showProgressDialog()
+
+        // [START sign_in_with_email]
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val user = auth.currentUser
+                    updateUI()
+                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+                    updateUI()
+                }
+                // [END_EXCLUDE]
+            }
+        // [END sign_in_with_email]
+    }
+
+    private fun updateUI() {
+        hideProgressDialog()
+    }
+
+    @VisibleForTesting
+    val progressDialog by lazy {
+        ProgressDialog(this)
+    }
+
+    fun showProgressDialog() {
+        progressDialog.setMessage("Loading...")
+        progressDialog.isIndeterminate = true
+        progressDialog.show()
+    }
+
+    fun hideProgressDialog() {
+        if (progressDialog.isShowing) {
+            progressDialog.dismiss()
+        }
+    }
+
     companion object {
         private val TAG = "LoginActivity"
-        private val REQUEST_SIGNUP = 0
     }
 
 }
