@@ -12,6 +12,9 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        val intent = Intent(this@HomeActivity, LoginActivity::class.java )
+        startActivity(intent)
+
         CreateArticle.setOnClickListener{
             goCreateArticle()
         }
