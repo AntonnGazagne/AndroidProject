@@ -1,17 +1,17 @@
 package fr.isen.twibook
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlinx.android.synthetic.main.activity_create_article.*
-import java.lang.Exception
+import kotlin.collections.ArrayList
 
 
 class CreateArticleActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class CreateArticleActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance().reference
 
         sharedPreferences = getSharedPreferences("Twibook", Context.MODE_PRIVATE)
-        val pseudo = sharedPreferences.getString("pseudo","TestPseudo") ?: ""
+        val pseudo = sharedPreferences.getString("pseudo","") ?: ""
 
         Post.setOnClickListener{
             onPost(pseudo)
@@ -43,11 +43,18 @@ class CreateArticleActivity : AppCompatActivity() {
             val formater = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
             val date = formater.format(cal.time)
 
-            val article = Article(date,pseudo, titre,description)
+            val article = Article(date,pseudo, titre,description, ArrayList(), ArrayList() )
             val child = database.child("Articles").child(database.push().key.toString())
             child.setValue(article)
+
+            gohHome()
         } else {
             Toast.makeText(this, "Un des champs n'est pas rempli", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun gohHome(){
+        val intent = Intent(this@CreateArticleActivity, HomeActivity::class.java )
+        startActivity(intent)
     }
 }
