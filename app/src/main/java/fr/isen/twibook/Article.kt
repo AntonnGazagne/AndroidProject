@@ -1,12 +1,14 @@
 package fr.isen.twibook
 
-data class Article(
+data class  Article(
     var date: String? = "",
     var auteur: String? = "",
+    var photo: String? ="",
     var titre: String? = "",
     var description: String? = "",
-    var commentaires: ArrayList<Commentaires>,
-    var liker: ArrayList<Auteur>
+    var commentaires: ArrayList<Commentaires>? = ArrayList(),
+    var liker: ArrayList<Auteur>? = ArrayList(),
+    var id: String? = ""
 )
 
 data class Commentaires(
