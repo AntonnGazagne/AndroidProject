@@ -1,6 +1,5 @@
 package fr.isen.twibook
 
-import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 
 class LoginActivity : AppCompatActivity() {
@@ -16,7 +14,7 @@ class LoginActivity : AppCompatActivity() {
     var _emailText: EditText? = null
     var _passwordText: EditText? = null
     var _loginButton: Button? = null
-    var _signupLink: TextView? = null
+    var _signupLink: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         _loginButton!!.setOnClickListener { login() }
 
         _signupLink!!.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
+            val intent = Intent(this@LoginActivity, SignupActivity::class.java)
             startActivity(intent)
         }
     }
@@ -74,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
     fun onLoginSuccess() {
         _loginButton!!.isEnabled = true
-        startActivity(Intent(this, HomeActivity::class.java))
+        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
     }
 
     fun onLoginFailed() {

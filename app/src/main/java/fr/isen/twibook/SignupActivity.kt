@@ -23,7 +23,7 @@ class SignupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         _registerButton = findViewById(R.id.signup_activity_register_btn)
-        
+
         _registerButton!!.setOnClickListener { register() }
 
     }
