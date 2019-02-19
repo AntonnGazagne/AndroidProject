@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.content.Intent
 import android.support.v7.app.AlertDialog
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_signup.*
 
 
 class SignupActivity : AppCompatActivity() {
@@ -22,9 +23,7 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        _registerButton = findViewById(R.id.signup_activity_register_btn)
-
-        _registerButton!!.setOnClickListener { register() }
+        signup_activity_register_btn!!.setOnClickListener { register() }
 
     }
 
@@ -36,7 +35,7 @@ class SignupActivity : AppCompatActivity() {
         _passwordText = findViewById(R.id.signup_activity_mdp_edittxt)
         _validpasswordText = findViewById(R.id.signup_activity_validmdp_edittxt)
 
-        if (_nameText!!.text.toString().isEmpty()) {
+        if (signup_activity_nom_edittxt.text.toString().isEmpty()) {
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
             alertDialog.setMessage("Entrez un nom")
@@ -46,7 +45,7 @@ class SignupActivity : AppCompatActivity() {
             val dialog: AlertDialog = alertDialog.create()
             dialog.show()
 
-        } else if (_firstnameText!!.text.toString().isEmpty()) {
+        } else if (signup_activity_prenom_edittxt.text.toString().isEmpty()) {
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
             alertDialog.setMessage("Entrez un prenom")
@@ -56,7 +55,7 @@ class SignupActivity : AppCompatActivity() {
             val dialog: AlertDialog = alertDialog.create()
             dialog.show()
 
-        } else if (_emailText!!.text.toString().isEmpty()) {
+        } else if (signup_activity_email_edittxt.text.toString().isEmpty()) {
             val alertDialog = AlertDialog.Builder(this@SignupActivity)
             alertDialog.setTitle("oops!")
             alertDialog.setMessage("Entrez une addresse mail")

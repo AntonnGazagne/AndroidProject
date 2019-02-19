@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import android.R.attr.key
+import android.content.Intent
 import kotlinx.android.synthetic.main.activity_post.*
 
 
@@ -40,9 +41,19 @@ class PostActivity : AppCompatActivity() {
             }
         })
 
+        CommentButton.setOnClickListener{
+            goComment()
+        }
+
+        LikeButton.setOnClickListener{
+
+        }
 
     }
 
-
+    private fun goComment(){
+        val intent = Intent(this@PostActivity, CommentaireActivity::class.java )
+        startActivity(intent)
+    }
 
 }
